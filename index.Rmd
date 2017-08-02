@@ -1,0 +1,253 @@
+---
+title: "Beyond Axes"
+subtitle: "Simulating Systems with Interactive Graphics"
+author: "Sean Kross"
+date: "2017-08-03"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+background-image: url(https://www.gatesnotes.com/-/media/Images/Articles/About-Bill-Gates/Remembering-Hans-Rosling/hans-rosling-memoriam_2017_article_1200x564_v1.jpg)
+
+---
+
+![](img/ted.png)
+
+[The Best Stats You've Ever Seen](https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen)
+
+---
+class: center, middle
+
+# Most People Struggle to Understand Models
+
+---
+
+![](img/election.png)
+
+---
+
+![](img/flip-tweet.png)
+
+---
+class: center, middle
+
+# Interactive Model Explanations that I Admire
+
+---
+class: center, middle
+
+# The Parable of the Polygons
+
+by Vi Hart and Nicky Case
+
+Based on [Thomas Schelling](https://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf)'s *Dynamic Models of Segregation*
+
+---
+
+![](img/polygons.png)
+
+[Live Demo](http://ncase.me/polygons/)
+
+---
+class: center, middle
+
+# To Build a Better Ballot
+
+by Nicky Case
+
+---
+
+![](img/ballot.png)
+
+[Live Demo](http://ncase.me/ballot/sandbox/?m=%7B%22s%22%3A%22FPTP%22%2C%22v%22%3A%5B%5B157%2C149%5D%5D%2C%22c%22%3A%5B%5B63%2C100%5D%2C%5B237%2C100%5D%2C%5B266%2C266%5D%5D%2C%22d%22%3A%22The%20Election%20of%201912%22%7D)
+
+---
+class: center, middle
+
+# How Can we Empower Folks to Build Interactive Models?
+
+---
+class: center, middle
+
+![](img/p5js.svg)
+
+"A Software Sketchbook"
+
+---
+class: center, middle
+
+![](img/p5-doc.png)
+
+---
+class: center, middle
+
+![](img/p5-doc-box.png)
+
+---
+class: center, middle
+
+![](img/p5-plus-r.png)
+
+---
+
+```{r}
+library(p5)
+
+p5() %>%
+  createCanvas(100, 100) %>%
+  background("#002d72") %>%
+  rect(x = 10, y = 10, w = 50, h = 50)
+```
+
+---
+
+```{r}
+library(p5)
+library(tibble)
+
+squares <- data_frame(x = c(100, 100, 200, 200),
+                      y = c(50, 150, 50, 150),
+                      w = rep(40, 4),
+                      h = rep(40, 4))
+
+squares %>%
+  p5() %>%
+  createCanvas(300, 200) %>%
+  background("#002d72") %>%
+  rect()
+```
+
+---
+
+```{r}
+p5() %>%
+  createCanvas(100, 100) %>%
+  background("#DCDCDC") %>%
+  arc(50, 55, 50, 50, 0, ~HALF_PI) %>%
+  noFill() %>%
+  arc(50, 55, 60, 60, ~HALF_PI, ~PI) %>%
+  arc(50, 55, 70, 70, ~PI, ~PI+QUARTER_PI) %>%
+  arc(50, 55, 80, 80, ~PI+QUARTER_PI, ~TWO_PI)
+```
+
+---
+
+```{r, eval=FALSE}
+library(tibble)
+
+stripes <- data_frame(
+  x = rep(0, 7),
+  y = cumsum(c(0, rep(30, 6))),
+  w = rep(190*2, 7),
+  h = rep(15, 7)
+)
+
+stripes_ <- stripes %>%
+  p5() %>%
+  createCanvas(190*2, 200) %>%
+  fill("#B22234") %>%
+  noStroke() %>%
+  rect()
+
+stars_ <- p5() %>%
+  fill("#3C3B6E") %>%
+  noStroke() %>%
+  rect(0, 0, 152, 105)
+
+bind_sketches(stripes_, stars_)
+```
+
+---
+
+```{r, echo=FALSE}
+library(tibble)
+
+stripes <- data_frame(
+  x = rep(0, 7),
+  y = cumsum(c(0, rep(30, 6))),
+  w = rep(190*2, 7),
+  h = rep(15, 7)
+)
+
+stripes_ <- stripes %>%
+  p5() %>%
+  createCanvas(190*2, 200) %>%
+  fill("#B22234") %>%
+  noStroke() %>%
+  rect()
+
+stars_ <- p5() %>%
+  fill("#3C3B6E") %>%
+  noStroke() %>%
+  rect(0, 0, 152, 105)
+
+bind_sketches(stripes_, stars_)
+```
+
+---
+
+```{r}
+draw() %>%
+  background("#F4F8FC") %>%
+  line(~mouseX, 0, ~mouseX, 200) %>%
+  sketch(draw = .)
+```
+
+---
+
+```{r}
+p5() %>%
+  createCanvas(400, 300) %>%
+  background("#F4F8FC") %>%
+  ellipse(~mouseX, ~mouseY, 30, 30)
+```
+
+---
+
+```{r}
+setup_ <- setup() %>%
+  createCanvas(640, 480)
+draw_ <- draw() %>%
+  js("
+      if (mouseIsPressed) {
+        fill(0);
+      } else {
+        fill(255);
+      }
+  ") %>%
+  ellipse(~mouseX, ~mouseY, 80, 80)
+sketch(setup = setup_, draw = draw_)
+```
+
+---
+
+# Goals:
+
+1. Make it easier to create interactive models in R.
+2. Create a bridge for R programers to learn Javascript.
+
+---
+
+# Thank You!
+
+Link to this talk: [seankross.com/jsm-talk](http://seankross.com/jsm-talk)
+
+Code for this talk: [github.com/seankross/jsm-talk](https://github.com/seankross/jsm-talk)
+
+Try out p5 in R: [github.com/seankross/p5](https://github.com/seankross/p5)
+
+Find me on Twitter: [@seankross](https://twitter.com/seankross)
+
+<br></br>
+
+Special thanks to Drs. Jeff Leek, Roger Peng, and Brian Caffo for supporting me
+in this work as part of the Johns Hopkins Data Science Lab.

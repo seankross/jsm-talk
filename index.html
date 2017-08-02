@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Beyond Axes</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Sean Kross" />
+    <meta name="date" content="2017-08-03" />
+    <link href="libs/remark-css/example.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/p5/p5.min.js"></script>
+    <script src="libs/p5-binding/p5.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Beyond Axes
+## Simulating Systems with Interactive Graphics
+### Sean Kross
+### 2017-08-03
+
+---
+
+
+
+
+background-image: url(https://www.gatesnotes.com/-/media/Images/Articles/About-Bill-Gates/Remembering-Hans-Rosling/hans-rosling-memoriam_2017_article_1200x564_v1.jpg)
+
+---
+
+![](img/ted.png)
+
+[The Best Stats You've Ever Seen](https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen)
+
+---
+class: center, middle
+
+# Most People Struggle to Understand Models
+
+---
+
+![](img/election.png)
+
+---
+
+![](img/flip-tweet.png)
+
+---
+class: center, middle
+
+# Interactive Model Explanations that I Admire
+
+---
+class: center, middle
+
+# The Parable of the Polygons
+
+by Vi Hart and Nicky Case
+
+Based on [Thomas Schelling](https://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf)'s *Dynamic Models of Segregation*
+
+---
+
+![](img/polygons.png)
+
+[Live Demo](http://ncase.me/polygons/)
+
+---
+class: center, middle
+
+# To Build a Better Ballot
+
+by Nicky Case
+
+---
+
+![](img/ballot.png)
+
+[Live Demo](http://ncase.me/ballot/sandbox/?m=%7B%22s%22%3A%22FPTP%22%2C%22v%22%3A%5B%5B157%2C149%5D%5D%2C%22c%22%3A%5B%5B63%2C100%5D%2C%5B237%2C100%5D%2C%5B266%2C266%5D%5D%2C%22d%22%3A%22The%20Election%20of%201912%22%7D)
+
+---
+class: center, middle
+
+# How Can we Empower Folks to Build Interactive Models?
+
+---
+class: center, middle
+
+![](img/p5js.svg)
+
+"A Software Sketchbook"
+
+---
+class: center, middle
+
+![](img/p5-doc.png)
+
+---
+class: center, middle
+
+![](img/p5-doc-box.png)
+
+---
+class: center, middle
+
+![](img/p5-plus-r.png)
+
+---
+
+
+```r
+library(p5)
+
+p5() %&gt;%
+  createCanvas(100, 100) %&gt;%
+  background("#002d72") %&gt;%
+  rect(x = 10, y = 10, w = 50, h = 50)
+```
+
+<div id="p5-8932700765" style="width:100px;height:100px;" class="p5 html-widget"></div>
+<script type="application/json" data-for="p5-8932700765">{"x":{"section":"sketch","pre":";","setup":"p.setup = function() {\np.createCanvas(100,100,null);\np.background('#002d72');\n};","between":";","draw":"p.draw = function() {\np.rect(10,10,50,50);\n};","post":";","data":null,"fn":"tneplnxhos"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+
+```r
+library(p5)
+library(tibble)
+
+squares &lt;- data_frame(x = c(100, 100, 200, 200),
+                      y = c(50, 150, 50, 150),
+                      w = rep(40, 4),
+                      h = rep(40, 4))
+
+squares %&gt;%
+  p5() %&gt;%
+  createCanvas(300, 200) %&gt;%
+  background("#002d72") %&gt;%
+  rect()
+```
+
+<div id="p5-5370176251" style="width:300px;height:200px;" class="p5 html-widget"></div>
+<script type="application/json" data-for="p5-5370176251">{"x":{"section":"sketch","pre":";","setup":"p.setup = function() {\np.createCanvas(300,200,null);\np.background('#002d72');\n};","between":";","draw":"p.draw = function() {\np.rect(100,50,40,40);\np.rect(100,150,40,40);\np.rect(200,50,40,40);\np.rect(200,150,40,40);\n};","post":";","data":{"x":[100,100,200,200],"y":[50,150,50,150],"w":[40,40,40,40],"h":[40,40,40,40]},"fn":"iqsyokuite"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+
+```r
+p5() %&gt;%
+  createCanvas(100, 100) %&gt;%
+  background("#DCDCDC") %&gt;%
+  arc(50, 55, 50, 50, 0, ~HALF_PI) %&gt;%
+  noFill() %&gt;%
+  arc(50, 55, 60, 60, ~HALF_PI, ~PI) %&gt;%
+  arc(50, 55, 70, 70, ~PI, ~PI+QUARTER_PI) %&gt;%
+  arc(50, 55, 80, 80, ~PI+QUARTER_PI, ~TWO_PI)
+```
+
+<div id="p5-6573027100" style="width:100px;height:100px;" class="p5 html-widget"></div>
+<script type="application/json" data-for="p5-6573027100">{"x":{"section":"sketch","pre":";","setup":"p.setup = function() {\np.createCanvas(100,100,null);\np.background('#DCDCDC');\n};","between":";","draw":"p.draw = function() {\np.arc(50,55,50,50,0,p.HALF_PI,null);\np.noFill();\np.arc(50,55,60,60,p.HALF_PI,p.PI,null);\np.arc(50,55,70,70,p.PI,p.PI+p.QUARTER_PI,null);\np.arc(50,55,80,80,p.PI+p.QUARTER_PI,p.TWO_PI,null);\n};","post":";","data":null,"fn":"bpkbpmfbgb"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+
+```r
+library(tibble)
+
+stripes &lt;- data_frame(
+  x = rep(0, 7),
+  y = cumsum(c(0, rep(30, 6))),
+  w = rep(190*2, 7),
+  h = rep(15, 7)
+)
+
+stripes_ &lt;- stripes %&gt;%
+  p5() %&gt;%
+  createCanvas(190*2, 200) %&gt;%
+  fill("#B22234") %&gt;%
+  noStroke() %&gt;%
+  rect()
+
+stars_ &lt;- p5() %&gt;%
+  fill("#3C3B6E") %&gt;%
+  noStroke() %&gt;%
+  rect(0, 0, 152, 105)
+
+bind_sketches(stripes_, stars_)
+```
+
+---
+
+<div id="p5-8637699940" style="width:504px;height:504px;" class="p5 html-widget"></div>
+<script type="application/json" data-for="p5-8637699940">{"x":{"section":"sketch","pre":";","setup":"p.setup = function() {\np.createCanvas(380,200,null);\n};","between":";","draw":"p.draw = function() {\np.fill('#B22234');\np.noStroke();\np.rect(0,0,380,15);\np.rect(0,30,380,15);\np.rect(0,60,380,15);\np.rect(0,90,380,15);\np.rect(0,120,380,15);\np.rect(0,150,380,15);\np.rect(0,180,380,15);\np.fill('#3C3B6E');\np.noStroke();\np.rect(0,0,152,105);\n};","post":";","data":{"x":[0,0,0,0,0,0,0],"y":[0,30,60,90,120,150,180],"w":[380,380,380,380,380,380,380],"h":[15,15,15,15,15,15,15]},"fn":"nxwwdbyrcg"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+
+```r
+draw() %&gt;%
+  background("#F4F8FC") %&gt;%
+  line(~mouseX, 0, ~mouseX, 200) %&gt;%
+  sketch(draw = .)
+```
+
+<div id="p5-9734921648" style="width:504px;height:504px;" class="p5 html-widget"></div>
+<script type="application/json" data-for="p5-9734921648">{"x":{"section":"sketch","pre":";","setup":"p.setup = function() {\n};","between":";","draw":"p.draw = function() {\np.background('#F4F8FC');\np.line(p.mouseX,0,p.mouseX,200);\n};","post":";","data":null,"fn":"iwmhrskutn"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+
+```r
+p5() %&gt;%
+  createCanvas(400, 300) %&gt;%
+  background("#F4F8FC") %&gt;%
+  ellipse(~mouseX, ~mouseY, 30, 30)
+```
+
+<div id="p5-0961318561" style="width:400px;height:300px;" class="p5 html-widget"></div>
+<script type="application/json" data-for="p5-0961318561">{"x":{"section":"sketch","pre":";","setup":"p.setup = function() {\np.createCanvas(400,300,null);\np.background('#F4F8FC');\n};","between":";","draw":"p.draw = function() {\np.ellipse(p.mouseX,p.mouseY,30,30);\n};","post":";","data":null,"fn":"srdoinzoar"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+
+```r
+setup_ &lt;- setup() %&gt;%
+  createCanvas(640, 480)
+draw_ &lt;- draw() %&gt;%
+  js("
+      if (mouseIsPressed) {
+        fill(0);
+      } else {
+        fill(255);
+      }
+  ") %&gt;%
+  ellipse(~mouseX, ~mouseY, 80, 80)
+sketch(setup = setup_, draw = draw_)
+```
+
+<div id="p5-2370258172" style="width:504px;height:504px;" class="p5 html-widget"></div>
+<script type="application/json" data-for="p5-2370258172">{"x":{"section":"sketch","pre":";","setup":"p.setup = function() {\np.createCanvas(640,480,null);\n};","between":";","draw":"p.draw = function() {\n\n      if (p.mouseIsPressed) {\n        p.fill(0);\n      } else {\n        p.fill(255);\n      }\n  \np.ellipse(p.mouseX,p.mouseY,80,80);\n};","post":";","data":null,"fn":"vgykasucpm"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+# Goals:
+
+1. Make it easier to create interactive models in R.
+2. Create a bridge for R programers to learn Javascript.
+
+---
+
+# Thank You!
+
+Link to this talk: [seankross.com/jsm-talk](http://seankross.com/jsm-talk)
+
+Code for this talk: [github.com/seankross/jsm-talk](https://github.com/seankross/jsm-talk)
+
+Try out p5 in R: [github.com/seankross/p5](https://github.com/seankross/p5)
+
+Find me on Twitter: [@seankross](https://twitter.com/seankross)
+
+&lt;br&gt;&lt;/br&gt;
+
+Special thanks to Drs. Jeff Leek, Roger Peng, and Brian Caffo for supporting me
+in this work as part of the Johns Hopkins Data Science Lab.
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {window.dispatchEvent(new Event('resize'));});</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
